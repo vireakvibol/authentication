@@ -1,0 +1,60 @@
+
+.login{
+    height:100vh;
+    overflow: hidden;
+    
+    .image-container{
+        background-color: #ff6711;
+    
+        ._image{
+            height:100vh;
+            display: flex;
+            align-items: center;
+        }
+    }
+    .login-container{
+        height:100%;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        .login-card{
+            background-color: #fff;
+            box-shadow: rgba(0, 0, 0, 0.15) 0 5px 15px 0;
+            padding:60px;
+            width:500px;
+            margin:0 auto;
+            border-radius: 10px;
+
+            .login-title{
+                margin-bottom: 30px;
+                font-size: 30px;
+            }
+
+            .login-form-button{
+                width:100%;
+                border-radius: 5px;
+                height:40px;
+                margin-top: 30px;
+            }
+
+            .login-form-forgot{
+                text-align: right;
+            }
+            ._input{
+                border-radius: 5px;
+                height:40px;
+            }
+        }
+    }
+}
+
+
+@Xs: ~"only screen and (max-width: 1200px)";
+@media @Xs{
+    .login-container {
+        background-color: #ff6711;
+      
+    }
+   
+}
+

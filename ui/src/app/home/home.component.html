@@ -1,0 +1,58 @@
+<div nz-row class="login">
+  <div nz-col [nzXl]="12" [nzSm]="0" [nzXs]="0" [nzMd]="0" class="image-container">
+    <h1 style="color: #fff; margin:20px">BILLBOX</h1>
+    <div class="_image">
+      <img nzImage src="assets/img/Depression-rafiki-2.png"
+        width="70%" height="auto" style="margin:0 auto">
+
+    </div>
+
+  </div>
+  
+  <div nz-col [nzXl]="12" [nzSm]="24" [nzXs]="24" [nzMd]="24" class="login-container">
+  
+    <div class="login-card">
+      <h1 class="login-title">Get's Started</h1>
+      <form nz-form class="login-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+
+          <!-- <nz-form-label [nzSpan]="24" nzRequired>Phone Number</nz-form-label> -->
+
+
+          <nz-form-control [nzValidateStatus]="validateForm.controls['phoneNumber']"
+            nzErrorTip="Please input your phone number!">
+            <nz-input-group nzPrefixIcon="lock">
+
+              <input formControlName="phoneNumber" placeholder="Phone Number" nz-input class="_input" nzSize="large" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <!-- <nz-form-label [nzSpan]="24" nzRequired>Phone Number</nz-form-label> -->
+          <nz-form-control [nzErrorTip]="validatePassword">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="password" nzSize="large" nz-input formControlName="password" placeholder="Password"
+                class="_input" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <div nz-row class="login-form-margin">
+          <div nz-col [nzSpan]="12">
+            <label nz-checkbox formControlName="remember">
+              <span>Remember me</span>
+            </label>
+          </div>
+          <div nz-col [nzSpan]="12" style="text-align: right;">
+            <a class="login-form-forgot">Forgot password</a>
+          </div>
+        </div>
+        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" (click)="submitForm()"
+          type="submit" nzSize="large">Create Account</button>
+        <div style="margin-top: 5px;">Aready have an account? <span style="color:#ff6711;font-weight: 500;">Log in</span></div>
+      </form>
+     
+    </div>
+
+  </div>
+
+</div>

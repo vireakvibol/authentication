@@ -1,0 +1,42 @@
+name: actions
+
+on: [push, pull_request]
+jobs:
+  build-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'pull repo'
+        uses: actions/checkout@v2
+      - name: 'setup node'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - run: yarn install
+        working-directory: 'server'
+      - run: yarn run build
+        working-directory: 'server'
+
+  build-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'pull repo'
+        uses: actions/checkout@v2
+      - name: 'setup node'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - run: yarn install
+        working-directory: 'ui'
+      - run: yarn run build
+        working-directory: 'ui'
+
+  scan-server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - run: yarn install
+      - name: Security and Licence Scan
+        uses: ShiftLeftSecurity/scan-action@v1.3.0
