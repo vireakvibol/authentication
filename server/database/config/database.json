@@ -1,29 +1,29 @@
 {
-    "development": {
-      "username": "root",
-      "password": "password",
-      "database": "billbox_authentication",
-      "host": "127.0.0.1",
-      "dialect": "mysql",
-      "port": 3306,
-      "synchronize": true
-    },
-    "test": {
-      "username": "root",
-      "password": "password",
-      "database": "database_test",
-      "host": "127.0.0.1",
-      "dialect": "mysql",
-      "port": 3306,
-      "synchronize": true
-    },
-    "production": {
-      "username": "root",
-      "password": "password",
-      "database": "billbox_authentication",
-      "host": "127.0.0.1",
-      "dialect": "mysql",
-      "port": 3306,
-      "synchronize": false
-    }
+  "development": {
+    "username": "root",
+    "password": "password",
+    "database": "billbox_authentication",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "port": 3306,
+    "synchronize": true
+  },
+  "test": {
+    "username": "root",
+    "password": "password",
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "port": 3306,
+    "synchronize": true
+  },
+  "production": {
+    "username": "root",
+    "password": "password",
+    "database": "billbox_authentication",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "port": 3306,
+    "synchronize": false
   }
+}

@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { createHmac } from 'crypto';
 import { genSaltSync, hashSync } from 'bcrypt';
 import { Sequelize } from 'sequelize-typescript';
-import { UsersModel } from 'src/users/users.model';
-import { UserGroupsModel } from 'src/users/groups/groups.model';
 import { InjectModel } from '@nestjs/sequelize';
-import { OptionsModel } from 'src/options/options.model';
+import { UsersModel } from 'src/models/users.model';
+import { UserGroupsModel } from 'src/models/user_groups.model';
+import { OptionsModel } from 'src/models/options.model';
 
 @Injectable()
 export class InstallerService {

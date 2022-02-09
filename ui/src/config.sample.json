@@ -1,0 +1,11 @@
+{
+  "ENDPOINT_URL": ["end point url"],
+  "FIREBASE_CONFIG": {
+    "apiKey": "",
+    "authDomain": "",
+    "projectId": "",
+    "storageBucket": "",
+    "messagingSenderId": "",
+    "appId": ""
+  }
+}

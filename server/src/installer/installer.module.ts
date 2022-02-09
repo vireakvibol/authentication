@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { OptionsModel } from 'src/options/options.model';
-import { UserGroupsModel } from 'src/users/groups/groups.model';
-import { UsersModel } from 'src/users/users.model';
+import { OptionsModel } from 'src/models/options.model';
+import { UsersModel } from 'src/models/users.model';
+import { UserGroupsModel } from 'src/models/user_groups.model';
 import { InstallerController } from './installer.controller';
 import { InstallerService } from './installer.service';
 

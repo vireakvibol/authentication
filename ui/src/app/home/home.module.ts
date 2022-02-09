@@ -6,13 +6,13 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox'
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { HomeService } from './home.service';
 
 @NgModule({
-  declarations: [
-    HomeComponent
-  ],
+  declarations: [HomeComponent],
   imports: [
     CommonModule,
     HomeRoutingModule,
@@ -21,7 +21,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     NzButtonModule,
     NzInputModule,
     NzCheckboxModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    NzMessageModule,
+  ],
+  providers: [HomeService]
 })
-export class HomeModule { }
+export class HomeModule {}

@@ -15,7 +15,6 @@ jobs:
         working-directory: 'server'
       - run: yarn run build
         working-directory: 'server'
-
   build-ui:
     runs-on: ubuntu-latest
     steps:
@@ -25,11 +24,20 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
+      - run: echo $UI_CONFIG > src/config.json
+        working-directory: 'ui'
+        env:
+          UI_CONFIG: ${{ secrets.UI_CONFIG }}
       - run: yarn install
         working-directory: 'ui'
       - run: yarn run build
         working-directory: 'ui'
-
+  docker-io-build:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: 'actions/checkout@v2'
+      - name: 'Build to docker.io'
+        run: docker build . -t docker.io/library/billbox-me/authentication:latest
   scan-server:
     runs-on: ubuntu-latest
     steps:

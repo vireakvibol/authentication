@@ -1,5 +1,5 @@
 import { Controller, Get, Put, Req, Res } from '@nestjs/common';
-import {} from 'fastify';
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 import { InstallerService } from './installer.service';
 
 @Controller('installer')
@@ -7,11 +7,12 @@ export class InstallerController {
   constructor(private installerService: InstallerService) {}
 
   @Get()
+  @ApiExcludeEndpoint()
   async get(@Req() request, @Res() response): Promise<void> {
     // check if admin user is already existed
     if (await this.installerService.isInstalled()) {
       setTimeout(async (): Promise<void> => {
-        response.status(404).response.send({
+        response.status(404).send({
           statusCode: 404,
           message: 'Cannot GET ' + request.path,
           error: 'Not Found',
@@ -25,6 +26,7 @@ export class InstallerController {
   }
 
   @Put()
+  @ApiExcludeEndpoint()
   async put(@Req() request, @Res() response): Promise<void> {
     // check if admin user is already existed
     if (await this.installerService.isInstalled()) {
