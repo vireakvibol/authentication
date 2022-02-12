@@ -1,10 +1,10 @@
 import { UUIDV4 } from 'sequelize';
 import { Column, Model, Table } from 'sequelize-typescript';
-import { Optional } from 'sequelize/dist';
+import { Optional } from 'sequelize';
 
 interface Group {
-  id: string;
-  name: string;
+  readonly id: string;
+  readonly name: string;
 }
 type GroupOptional = Optional<Group, 'id'>;
 

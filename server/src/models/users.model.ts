@@ -42,7 +42,7 @@ export class UsersModel extends Model<User, UserOptional> {
   @Column
   readonly lastName: string;
 
-  @Column
+  @Column({ unique: true })
   readonly tel: string;
 
   @Column({ allowNull: false, defaultValue: true })

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { initializeApp } from 'firebase/app';
 import {
   Auth,
@@ -17,10 +18,10 @@ export class HomeService {
   private firebaseAuth!: Auth;
   private confirmationResult!: ConfirmationResult;
 
-  constructor() {}
+  constructor(private httpClient: HttpClient) {}
 
   public async RecaptchaVerifierRender(): Promise<void> {
-    initializeApp(CONFIG.FIREBASE);
+    initializeApp(CONFIG.FIREBASE_CONFIG);
 
     this.firebaseAuth = getAuth();
     this.firebaseAuth.useDeviceLanguage();
@@ -38,6 +39,8 @@ export class HomeService {
 
   public async submit(phone: string): Promise<void> {
     await this.recaptchaVerifier.render();
+
+    // this.httpClient.get('http://localhost:3000/');
 
     try {
       this.confirmationResult = await signInWithPhoneNumber(

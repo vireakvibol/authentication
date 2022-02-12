@@ -62,6 +62,6 @@ export class InstallerController {
       return;
     }
 
-    response.status(201);
+    response.status(201).send();
   }
 }
