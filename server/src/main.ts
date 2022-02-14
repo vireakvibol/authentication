@@ -12,6 +12,10 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
+  app.enableCors({
+    origin: '*',
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Billbox Public API Gateway')
     .setDescription('Billbox Public API Gateway')

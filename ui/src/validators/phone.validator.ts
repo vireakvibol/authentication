@@ -18,7 +18,6 @@ export function PhoneValidator(httpCLient: HttpClient) {
 
             if (phoneUtil.isValidNumber(phoneNumber) === true) {
               observer.next(null);
-              console.log('true');
             } else {
               observer.next({ error: true, duplicated: true });
               throw new Error();

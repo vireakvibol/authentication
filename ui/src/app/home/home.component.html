@@ -27,7 +27,7 @@
     [nzMd]="24"
     class="login-container"
   >
-    <div class="login-card">
+    <div class="login-card" *ngIf="!OTPFormEnable">
       <h1 class="login-title">Get's Started</h1>
       <form
         nz-form
@@ -60,7 +60,7 @@
         </nz-form-item>
         <nz-form-item>
           <!-- <nz-form-label [nzSpan]="24" nzRequired>Phone Number</nz-form-label> -->
-          <nz-form-control [nzErrorTip]="validatePassword">
+          <nz-form-control nzErrorTip="Please input your password!">
             <nz-input-group nzPrefixIcon="lock">
               <input
                 type="password"
@@ -94,8 +94,51 @@
         >
           Create Account
         </button>
-        <span id="recaptcha-container"></span>
+      </form>
+    </div>
+    <div class="login-card" *ngIf="OTPFormEnable">
+      <h1 class="login-title">Comfirm code</h1>
+      <form
+        nz-form
+        class="login-form"
+        [formGroup]="OTPForm"
+        (ngSubmit)="submitOTP()"
+      >
+        <nz-form-item>
+          <!-- <nz-form-label [nzSpan]="24" nzRequired>Phone Number</nz-form-label> -->
+
+          <nz-form-control [nzErrorTip]="otpErrorTpl" nzHasFeedback>
+            <nz-input-group nzPrefixIcon="key">
+              <input
+                formControlName="otp"
+                placeholder="SMS Code"
+                nz-input
+                class="_input"
+                nzSize="large"
+              />
+              <ng-template #otpErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')"
+                  >Please input your confirm code!</ng-container
+                >
+                <ng-container *ngIf="control.hasError('incorrect')"
+                  >SMS code is incorrect!</ng-container
+                >
+              </ng-template>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <button
+          nz-button
+          class="login-form-button login-form-margin"
+          [nzType]="'primary'"
+          type="submit"
+          nzSize="large"
+          [nzLoading]="loading"
+        >
+          Create Account
+        </button>
       </form>
     </div>
   </div>
+  <span id="recaptcha-container"></span>
 </div>
