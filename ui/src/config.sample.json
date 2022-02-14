@@ -1,5 +1,5 @@
 {
-  "ENDPOINT_URL": ["end point url"],
+  "ENDPOINT_URL": "end point url",
   "FIREBASE_CONFIG": {
     "apiKey": "",
     "authDomain": "",

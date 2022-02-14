@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - run: echo "{\"ENDPOINT_UIL\":\"\",\"FIREBASE_CONFIG\":{\"apiKey\":\"\",\"authDomain\":\"\",\"projectId\":\"\",\"storageBucket\":\"\",\"messagingSenderId\":\"\",\"appId\":\"\"}}" > src/config.json
+      - run: echo "{\"ENDPOINT_URL\":\"\",\"FIREBASE_CONFIG\":{\"apiKey\":\"\",\"authDomain\":\"\",\"projectId\":\"\",\"storageBucket\":\"\",\"messagingSenderId\":\"\",\"appId\":\"\"}}" > src/config.json
         working-directory: 'ui'
       - run: yarn install
         working-directory: 'ui'

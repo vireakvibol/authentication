@@ -19,14 +19,10 @@ export class LoginService {
     try {
       usersModel = await this.usersModel.findOne({ where: { tel } });
       if (usersModel === null) {
-        if (await this.firebaseAuthenticate(tel)) {
-          return {
-            status: 200,
-            message: '',
-          };
-        }
-
-        throw new Error('User not found!');
+        return {
+          status: 403,
+          message: 'user not found',
+        };
       }
     } catch (error) {
       throw new Error(error);
