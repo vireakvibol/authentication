@@ -34,32 +34,35 @@ export class HomeComponent implements OnInit {
       this.loading = true;
 
       try {
-        await this.homeService.submit(
+        await this.homeService.login(
           this.validateForm.value.phone,
           this.validateForm.value.password
         );
         this.nzMessage.success('Login Success!');
         return;
-      } catch (error) {
-        console.log(error);
-        if ((error = !403)) {
+      } catch (error: ?number | unknown) {
+        if (error !== 403) {
           this.loading = false;
-          this.nzMessage.error('Incorrect credential!');
+          this.nzMessage.error('Something went wrong! Please try again later.');
           return;
         }
-        this.OTPFormEnable = true;
-        this.loading = false;
-        this.nzMessage.info('Confirmation code is sending...');
       }
 
-      try {
-        await this.homeService.sendingOTP();
-        return;
-      } catch(error){
-        console.log(error);
-        this.nzMessage.error('Incorrect SMS code!');
-        return;
-      }
+      this.OTPFormEnable = true;
+
+      // try {
+      //   await this.homeService.register(
+      //     this.validateForm.value.phone,
+      //     this.validateForm.value.password
+      //   );
+      //   this.nzMessage.success('Successfully registered!');
+      //   return;
+      // } catch (error: ?number | unknown) {
+      //   console.log(error);
+      //   this.nzMessage.error('Something went wrong! Please try again later.')
+      //   return;
+      // }
+
     }
 
     this.nzMessage.error('Please input your phone and password!');
@@ -81,7 +84,9 @@ export class HomeComponent implements OnInit {
   async submitOTP(): Promise<void> {
     this.loading = true;
     try {
-      const userCredential: UserCredential = await this.homeService.validateOTP(this.OTPForm.value.otp);
+      const userCredential: UserCredential = await this.homeService.validateOTP(
+        this.OTPForm.value.otp
+      );
       console.log(userCredential);
       this.nzMessage.success('Login Success!');
       return;

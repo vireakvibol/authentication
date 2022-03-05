@@ -15,6 +15,7 @@ import {
   PhoneNumberFormat,
   PhoneNumberUtil,
 } from 'google-libphonenumber';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
   providedIn: 'root',
@@ -24,8 +25,8 @@ export class HomeService {
   private firebaseAuth!: Auth;
   private confirmationResult!: ConfirmationResult;
   private tel!: string;
-  private password!: string;
   private country_code!: string;
+  private nzMessage!: NzMessageService;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -50,60 +51,99 @@ export class HomeService {
     }
   }
 
-  public async submit(tel: string, password: string): Promise<void> {
-    this.tel = tel;
-    this.password = password;
+  // public async submit(tel: string, password: string): Promise<void> {
+  //   this.tel = tel;
+  //   this.password = password;
 
-    try {
-      const ipinfo: { country_code: string } = await this.httpClient
-        .get<{ country_code: string }>('https://ipapi.co/json')
-        .toPromise();
-      this.country_code = ipinfo.country_code;
-    } catch (error) {
-      console.log(error);
-      throw new Error('failed to request country code!');
-    }
+  //   try {
+  //     const ipinfo: { country_code: string } = await this.httpClient
+  //       .get<{ country_code: string }>('https://ipapi.co/json')
+  //       .toPromise();
+  //     this.country_code = ipinfo.country_code;
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new Error('failed to request country code!');
+  //   }
 
-    try {
-      await this.register();
-    } catch (error) {
-      console.log(error);
-      throw new Error('failed to signin.');
-    }
+  //   try {
+  //     await this.login();
+  //   } catch (error: ?string | unknown) {
+  //     console.log(error)
+  //     switch (error) {
+  //       case '403':
+  //         await this.recaptchaVerifier.render();
+  //         throw new Error('403');
+  //       case '401':
+  //         throw new Error('401');
+  //       default:
+  //         throw new Error('failed to login');
+  //     }
+  //   }
 
-    // await this.recaptchaVerifier.render();
+  // await this.recaptchaVerifier.render();
 
-    // const result: string = await this.httpClient.post<string>(CONFIG.ENDPOINT_URL + '/authentication/register', {
+  // const result: string = await this.httpClient.post<string>(CONFIG.ENDPOINT_URL + '/authentication/register', {
 
-    // }).toPromise;
-  }
+  // }).toPromise;
+  // }
 
-  private async register(): Promise<void> {
+  async login(tel: string, password: string): Promise<string> {
     // add credential to basic auth header
     const httpHeaders = {
       headers: new HttpHeaders({
         'CONTEXT-TYPE': 'application/json',
-        AUTHORIZATION: 'Basic ' + btoa(this.tel + ':' + this.password),
+        AUTHORIZATION: 'Basic ' + btoa(tel + ':' + password),
       }),
     };
 
     try {
-      const response = await this.httpClient
-        .post(CONFIG.ENDPOINT_URL + '/authentication/login', {}, httpHeaders)
+      const response: string = await this.httpClient
+        .post<string>(
+          CONFIG.ENDPOINT_URL + '/authentication/login',
+          {},
+          httpHeaders
+        )
         .toPromise();
-      if (response === null) {
-        return;
+      return response;
+    } catch (error: ?({ status: number } | unknown)) {
+      switch (error.status) {
+        case 403:
+          await this.recaptchaVerifier.render();
+          throw error.status;
+        case 401:
+          this.nzMessage.error('Invalid phone number or password!');
+          throw error.status;
+        default:
+          throw new Error('failed to login.');
       }
-    } catch (error: ?{ status: number } | unknown) {
-      if (error.status !== 403) {
-        throw new Error('failed to register');
-      }
-      await this.recaptchaVerifier.render();
-      throw new error(403);
     }
   }
 
-  public async sendingOTP(): Promise<void> {
+  async register(tel: string, password: string): Promise<string> {
+    // add credential to basic auth header
+    const httpHeaders = {
+      headers: new HttpHeaders({
+        'CONTEXT-TYPE': 'application/text',
+        AUTHORIZATION: 'Basic ' + btoa(tel + ':' + password),
+      }),
+    };
+
+    try {
+      const response: string = await this.httpClient
+        .post<string>(
+          CONFIG.ENDPOINT_URL + '/authentication/register',
+          {},
+          httpHeaders
+        )
+        .toPromise();
+      return response;
+    } catch (error: ?({ status: number } | unknown)) {
+      console.log(error);
+      throw error.status;
+    }
+  }
+
+  async sendingOTP(): Promise<void> {
     try {
       const tel: string = await this.formatPhoneNumber();
       this.confirmationResult = await signInWithPhoneNumber(
@@ -117,9 +157,11 @@ export class HomeService {
     }
   }
 
-  public async validateOTP(otp: string): Promise<UserCredential> {
+  async validateOTP(otp: string): Promise<UserCredential> {
     try {
-      const response: UserCredential = await this.confirmationResult.confirm(otp);
+      const response: UserCredential = await this.confirmationResult.confirm(
+        otp
+      );
       return response;
     } catch (error) {
       console.log(error);
@@ -141,7 +183,7 @@ export class HomeService {
 
       return phoneNumber;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new Error('failed to format phone number');
     }
   }

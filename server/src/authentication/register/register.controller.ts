@@ -46,7 +46,6 @@ export class RegisterController {
       }
 
       const token: string = await this.registerService.register(tel, password);
-
       response.status(200).send(token);
       return;
     } catch (error) {
