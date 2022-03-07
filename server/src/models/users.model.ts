@@ -37,10 +37,10 @@ export class UsersModel extends Model<User, UserOptional> {
   readonly password: string;
 
   @Column
-  readonly firstName: string;
+  readonly firstname: string;
 
   @Column
-  readonly lastName: string;
+  readonly lastname: string;
 
   @Column({ unique: true })
   readonly tel: string;
