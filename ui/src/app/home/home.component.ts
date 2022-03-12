@@ -48,7 +48,15 @@ export class HomeComponent implements OnInit {
         }
       }
 
+      this.nzMessage.info('Confirmation code has been sent to your phone number ' + this.validateForm.value.phone + '!');
       this.OTPFormEnable = true;
+      this.loading = false;
+
+      try {
+        await this.homeService.sendingOTP(this.validateForm.value.phone);
+      } catch(error: unknown) {
+        console.log(error);
+      }
 
       // try {
       //   await this.homeService.register(
@@ -62,7 +70,7 @@ export class HomeComponent implements OnInit {
       //   this.nzMessage.error('Something went wrong! Please try again later.')
       //   return;
       // }
-
+      return;
     }
 
     this.nzMessage.error('Please input your phone and password!');
@@ -87,7 +95,7 @@ export class HomeComponent implements OnInit {
       const userCredential: UserCredential = await this.homeService.validateOTP(
         this.OTPForm.value.otp
       );
-      console.log(userCredential);
+      this.homeService.register(this.validateForm.value.phone, this.validateForm.value.password, userCredential);
       this.nzMessage.success('Login Success!');
       return;
     } catch (error) {

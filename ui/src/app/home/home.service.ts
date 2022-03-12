@@ -24,8 +24,6 @@ export class HomeService {
   private recaptchaVerifier!: RecaptchaVerifier;
   private firebaseAuth!: Auth;
   private confirmationResult!: ConfirmationResult;
-  private tel!: string;
-  private country_code!: string;
   private nzMessage!: NzMessageService;
 
   constructor(private httpClient: HttpClient) {}
@@ -119,7 +117,7 @@ export class HomeService {
     }
   }
 
-  async register(tel: string, password: string): Promise<string> {
+  async register(tel: string, password: string, userCredential: UserCredential): Promise<string> {
     // add credential to basic auth header
     const httpHeaders = {
       headers: new HttpHeaders({
@@ -132,7 +130,9 @@ export class HomeService {
       const response: string = await this.httpClient
         .post<string>(
           CONFIG.ENDPOINT_URL + '/authentication/register',
-          {},
+          {
+            user_credential: userCredential,
+          },
           httpHeaders
         )
         .toPromise();
@@ -143,9 +143,9 @@ export class HomeService {
     }
   }
 
-  async sendingOTP(): Promise<void> {
+  async sendingOTP(phoneNumber: string): Promise<void> {
     try {
-      const tel: string = await this.formatPhoneNumber();
+      const tel: string = await this.formatPhoneNumber(phoneNumber);
       this.confirmationResult = await signInWithPhoneNumber(
         this.firebaseAuth,
         tel,
@@ -153,7 +153,7 @@ export class HomeService {
       );
     } catch (error) {
       console.log(error);
-      throw new Error('invalid otp');
+      throw new Error('Error sending OTP SMS');
     }
   }
 
@@ -169,12 +169,23 @@ export class HomeService {
     }
   }
 
-  private async formatPhoneNumber(): Promise<string> {
+  private async formatPhoneNumber(tel: string): Promise<string> {
+    let country_code: string;
+    try {
+      const ipinfo: { country_code: string } = await this.httpClient
+        .get<{ country_code: string }>('https://ipapi.co/json')
+        .toPromise();
+      country_code = ipinfo.country_code;
+    } catch (error) {
+      console.log(error);
+      throw new Error('failed to request country code!');
+    }
+
     try {
       const number: PhoneNumber =
         PhoneNumberUtil.getInstance().parseAndKeepRawInput(
-          this.tel,
-          this.country_code
+          tel,
+          country_code
         );
       const phoneNumber: string = PhoneNumberUtil.getInstance().format(
         number,
