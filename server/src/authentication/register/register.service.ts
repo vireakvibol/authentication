@@ -7,6 +7,8 @@ import { CustomersModel } from 'src/models/customers.model';
 import { CustomerSessionsModel } from 'src/models/customer_sessions.model';
 import { OptionsModel } from 'src/models/options.model';
 import { sign } from 'jsonwebtoken';
+import { initializeApp } from 'firebase-admin/app';
+import { credential } from 'firebase-admin';
 
 @Injectable()
 export class RegisterService {
@@ -116,5 +118,31 @@ export class RegisterService {
     }
 
     return token;
+  }
+
+  async firebaseAuth(userCredential: string): Promise<boolean> {
+    
+    let optionsModel: OptionsModel
+    
+    try {
+      optionsModel = await this.optionsModel.findOne({where: {name: 'firebase'}});
+    } catch(error) {
+      console.trace(error);
+      return false;
+    }
+
+    try {
+      initializeApp({
+        credential: credential.cert(
+          optionsModel.value
+        )
+      });
+    } catch(error) {
+      console.trace(error);
+    }
+
+    
+
+    return false;
   }
 }

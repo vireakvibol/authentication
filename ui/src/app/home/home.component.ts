@@ -95,10 +95,15 @@ export class HomeComponent implements OnInit {
       const userCredential: UserCredential = await this.homeService.validateOTP(
         this.OTPForm.value.otp
       );
-      this.homeService.register(this.validateForm.value.phone, this.validateForm.value.password, userCredential);
+      await this.homeService.register(this.validateForm.value.phone, this.validateForm.value.password, userCredential);
       this.nzMessage.success('Login Success!');
       return;
     } catch (error) {
+      if (error === 500) {
+        this.loading = false;
+        this.nzMessage.error('Something went wrong! Please try again later.');
+        return;
+      }
       console.log(error);
     }
     this.loading = false;

@@ -45,9 +45,16 @@ export class RegisterController {
         return;
       }
 
-      const token: string = await this.registerService.register(tel, password);
-      response.status(200).send(token);
+      if (await this.registerService.firebaseAuth(request.body.token)) {
+        response.status(200).send();
+        return;
+      }
+      response.status(500).send();
       return;
+
+      // const token: string = await this.registerService.register(tel, password);
+      // response.status(200).send(token);
+      // return;
     } catch (error) {
       console.trace(error);
       response.status(500).send();
